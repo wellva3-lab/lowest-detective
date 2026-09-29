@@ -330,50 +330,73 @@ footer p{margin:4px 0;max-width:72ch}
     startAuto();
   }
 
-  /* 자동 넘김: 3초마다 카드 한 장씩 자동으로 넘어가요. 손으로 넘기거나 마우스를 올리면 잠깐 멈췄다가 다시 흘러가고, 끝에 닿으면 처음으로 돌아가요. */
+  /* 자동 흐름: 카드가 멈추지 않고 천천히 계속 흘러가요(초당 약 40px). 끝에 닿으면 끊김 없이 처음과 이어지도록
+     카드를 한 벌 복제해 뒤에 붙여요. 손으로 넘기거나 마우스를 올리면 멈췄다가, 손을 떼면 그 자리에서 다시 흘러가요. */
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var visible = new Set(), paused = new WeakMap(), autoTimer = null, io = null;
-  function stepRail(r){
-    var cards = r.children; if (!cards.length) return;
-    var max = r.scrollWidth - r.clientWidth; if (max < 4) return;
-    var base = cards[0].offsetLeft, x = r.scrollLeft, target = 0;
-    if (x < max - 4){
-      for (var i = 0; i < cards.length; i++){ var L = cards[i].offsetLeft - base; if (L > x + 4){ target = Math.min(L, max); break; } }
+  var SPEED = 40; /* px/초 */
+  var visible = new Set(), paused = new WeakMap(), io = null, rafId = null, lastT = 0;
+  function isPaused(r){ return (paused.get(r) || 0) > Date.now(); }
+  function setupLoop(r){
+    /* 이전에 붙인 복제본 정리 */
+    r.querySelectorAll('[data-clone]').forEach(function(c){ c.remove(); });
+    r._loopW = 0;
+    if (r.scrollWidth - r.clientWidth < 4) return; /* 한 화면에 다 들어가면 흐를 필요 없음 */
+    var orig = Array.prototype.slice.call(r.children);
+    orig.forEach(function(c){
+      var k = c.cloneNode(true); k.setAttribute('data-clone', ''); k.setAttribute('aria-hidden', 'true'); k.removeAttribute('id');
+      if (k.matches('a')) k.tabIndex = -1; k.querySelectorAll('a,button').forEach(function(x){ x.tabIndex = -1; });
+      r.appendChild(k);
+    });
+    r._loopW = r.children[orig.length].offsetLeft - r.children[0].offsetLeft;
+  }
+  function wrap(r){ if (r._loopW){ if (r.scrollLeft >= r._loopW) r.scrollLeft -= r._loopW; } }
+  function tick(t){
+    var dt = lastT ? Math.min(t - lastT, 64) : 16; lastT = t;
+    if (!document.hidden){
+      visible.forEach(function(r){
+        if (!r._loopW) return;
+        if (isPaused(r)){ r._pos = null; if (r._running){ r._running = false; r.style.scrollSnapType = ''; } return; }
+        if (!r._running){ r._running = true; r.style.scrollSnapType = 'none'; r._pos = r.scrollLeft; }
+        if (r._pos == null) r._pos = r.scrollLeft;
+        r._pos += SPEED * dt / 1000;
+        if (r._pos >= r._loopW) r._pos -= r._loopW;
+        r.scrollLeft = r._pos;
+      });
     }
-    /* iOS 사파리에서 스냅이 자동 이동을 되돌리지 않도록 잠깐 스냅을 끄고 이동 */
-    r.style.scrollSnapType = 'none';
-    r.scrollTo({left: target, behavior: reduceMotion ? 'auto' : 'smooth'});
-    clearTimeout(r._snapT); r._snapT = setTimeout(function(){ r.style.scrollSnapType = ''; }, 800);
+    rafId = requestAnimationFrame(tick);
   }
   function startAuto(){
     var rails = document.querySelectorAll('.rail');
     if ('IntersectionObserver' in window){
       if (io) io.disconnect();
-      io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }, {threshold: 0.2});
+      io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }, {threshold: 0.1});
     }
     rails.forEach(function(r){
+      setupLoop(r);
       if (io) io.observe(r); else visible.add(r);
       if (r.dataset.autoBound) return; r.dataset.autoBound = '1';
       var hold = function(ms){ paused.set(r, Date.now() + ms); };
-      r.addEventListener('mouseenter', function(){ hold(6000); });
-      r.addEventListener('mousemove', function(){ hold(4000); });
-      r.addEventListener('touchstart', function(){ hold(5000); }, {passive: true});
-      r.addEventListener('touchend', function(){ hold(4000); }, {passive: true});
-      r.addEventListener('wheel', function(){ hold(5000); }, {passive: true});
-      r.addEventListener('focusin', function(e){ if (e.target !== r) hold(8000); });
+      r.addEventListener('mouseenter', function(){ hold(1e9); });
+      r.addEventListener('mouseleave', function(){ hold(800); });
+      r.addEventListener('touchstart', function(){ hold(1e9); }, {passive: true});
+      r.addEventListener('touchend', function(){ hold(2500); }, {passive: true});
+      r.addEventListener('wheel', function(){ hold(2500); }, {passive: true});
+      r.addEventListener('focusin', function(e){ if (e.target !== r) hold(1e9); });
+      r.addEventListener('focusout', function(){ hold(1500); });
+      r.addEventListener('scroll', function(){ if (!r._running) wrap(r); }, {passive: true});
     });
-    if (autoTimer) return;
-    autoTimer = setInterval(function(){
-      if (document.hidden) return;
-      var i = 0, now = Date.now();
-      visible.forEach(function(r){ if ((paused.get(r) || 0) > now) return; setTimeout(function(){ stepRail(r); }, i++ * 300); });
-    }, 3000);
+    if (!rafId && !reduceMotion) rafId = requestAnimationFrame(tick);
+    if (reduceMotion && !rafId){ /* 동작 줄이기 설정: 부드럽게 흐르는 대신 4초마다 한 칸씩 */
+      rafId = setInterval(function(){ visible.forEach(function(r){ if (!r._loopW || isPaused(r)) return; var c = r.children[0]; r.scrollLeft += c.getBoundingClientRect().width + 10; wrap(r); }); }, 4000);
+    }
+    updateArrows();
   }
+  var resizeT; window.addEventListener('resize', function(){ clearTimeout(resizeT); resizeT = setTimeout(function(){ document.querySelectorAll('.rail').forEach(setupLoop); updateArrows(); }, 250); });
 
   function updateArrows(){
     document.querySelectorAll('.arrow').forEach(function(b){
       var r = document.getElementById(b.dataset.rail); if (!r) return;
-      b.disabled = b.dataset.dir === '-1' ? r.scrollLeft < 4 : r.scrollLeft + r.clientWidth >= r.scrollWidth - 4;
+      b.disabled = r._loopW ? false : (b.dataset.dir === '-1' ? r.scrollLeft < 4 : r.scrollLeft + r.clientWidth >= r.scrollWidth - 4);
     });
   }
   function videoCard(d){
@@ -404,9 +427,8 @@ footer p{margin:4px 0;max-width:72ch}
 
   document.getElementById('sigChips').addEventListener('click', function(e){ var b = e.target.closest('.chip'); if (!b) return; sigFilter = b.dataset.sig; renderBoard(); });
   document.getElementById('verdicts').addEventListener('click', function(e){ var b = e.target.closest('.vbtn'); if (!b) return; sigFilter = b.dataset.sig; renderBoard(); document.getElementById('board').scrollIntoView({behavior:'smooth'}); });
-  document.addEventListener('click', function(e){ var b = e.target.closest('.arrow'); if (!b) return; var r = document.getElementById(b.dataset.rail); if (!r) return; paused.set(r, Date.now() + 8000); r.scrollBy({left: +b.dataset.dir * Math.max(200, r.clientWidth * 0.85), behavior: reduceMotion ? 'auto' : 'smooth'}); });
+  document.addEventListener('click', function(e){ var b = e.target.closest('.arrow'); if (!b) return; var r = document.getElementById(b.dataset.rail); if (!r) return; paused.set(r, Date.now() + 5000); var d = +b.dataset.dir * Math.max(200, r.clientWidth * 0.85); if (r._loopW && d < 0 && r.scrollLeft + d < 0) r.scrollLeft += r._loopW; r.scrollBy({left: d, behavior: reduceMotion ? 'auto' : 'smooth'}); });
   document.addEventListener('scroll', function(e){ if (e.target.classList && e.target.classList.contains('rail')) updateArrows(); }, true);
-  window.addEventListener('resize', updateArrows);
 
   var msg = document.getElementById('finderMsg');
   function go(no){
