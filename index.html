@@ -155,6 +155,11 @@ a.row:hover .nm{text-decoration:underline;text-underline-offset:3px}
 .row .go{font-size:12px;font-weight:700;color:var(--brand);white-space:nowrap}
 .pill{display:inline-block;font-size:11.5px;font-weight:800;border-radius:8px;padding:3px 8px;white-space:nowrap}
 .pill.buy{background:var(--buy-soft);color:var(--buy)} .pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.wait{background:var(--wait-soft);color:var(--wait)}
+.bylist{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.bylist h3{margin:0 0 10px;font-size:15px;font-weight:800}
+.by{display:flex;flex-wrap:wrap;gap:6px}
+.by a{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--sub);text-decoration:none}
+.by a:hover{color:var(--ink);border-color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:14px}
 
 /* 핫딜 카드 */
@@ -304,6 +309,7 @@ footer p{margin:4px 0;max-width:72ch}
       <span><span class="pill ok">괜찮아요</span> 최저가보다 5% 이내</span>
       <span><span class="pill wait">기다려 보세요</span> 최저가보다 5% 넘게 비쌈</span>
     </div>
+    <div class="bylist"><h3>품목별 시세 자세히 보기</h3><div class="by"><!--ITEMS--><a href="p/toilet-paper/">휴지 최저가</a><a href="p/kitchen-towel/">키친타월 최저가</a><a href="p/wet-wipes/">물티슈 최저가</a><a href="p/water-2l/">생수 2L 최저가</a><a href="p/rice/">쌀 최저가</a><a href="p/instant-rice/">즉석밥 최저가</a><a href="p/ramen/">라면 최저가</a><a href="p/canned-tuna/">참치캔 최저가</a><a href="p/eggs/">계란 최저가</a><a href="p/cooking-oil/">식용유 최저가</a><a href="p/coffee-mix/">커피믹스 최저가</a><a href="p/laundry-detergent/">세탁세제 최저가</a><a href="p/fabric-softener/">섬유유연제 최저가</a><a href="p/dish-soap/">주방세제 최저가</a><a href="p/shampoo/">샴푸 최저가</a><a href="p/toothpaste/">치약 최저가</a><a href="p/zipper-bag/">지퍼백 최저가</a><a href="p/rubber-gloves/">고무장갑 최저가</a><!--/ITEMS--></div></div>
   </section>
 
   <section id="deals" aria-labelledby="dealsTitle">
