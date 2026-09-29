@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wellva3-lab.github.io/lowest-detective/sitemap.xml

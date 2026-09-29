@@ -3,13 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="매일 쓰는 생필품, 지금 사도 될까? 가격 기록으로 감별한 생필품 시세표와 최근 2개월 최저가 핫딜을 모았어요.">
-<meta property="og:title" content="최저가 탐정 — 이번 주 생필품, 지금 사도 될까?">
-<meta property="og:description" content="가격 기록으로 감별한 생필품 시세표와 최저가 핫딜">
+<meta name="description" content="휴지·생수·라면·세제 같은 생필품, 지금 사도 될까? 가격 기록으로 감별한 생필품 최저가 시세표와 최근 2개월 최저가 쿠팡 핫딜을 매일 모아요.">
+<meta name="keywords" content="생필품 최저가, 쿠팡 최저가, 생필품 시세, 최저가 핫딜, 휴지 최저가, 생수 최저가, 라면 최저가, 세제 최저가, 로켓배송 특가">
+<link rel="canonical" href="https://wellva3-lab.github.io/lowest-detective/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="최저가 탐정">
+<meta property="og:title" content="최저가 탐정 — 이번 주 생필품, 지금 사도 될까?">
+<meta property="og:description" content="가격 기록으로 감별한 생필품 시세표와 최근 2개월 최저가 핫딜">
+<meta property="og:url" content="https://wellva3-lab.github.io/lowest-detective/">
+<meta property="og:image" content="https://wellva3-lab.github.io/lowest-detective/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="최저가 탐정 — 이번 주 생필품, 지금 사도 될까?">
+<meta name="twitter:description" content="가격 기록으로 감별한 생필품 시세표와 최근 2개월 최저가 핫딜">
+<meta name="twitter:image" content="https://wellva3-lab.github.io/lowest-detective/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"최저가 탐정","alternateName":"생필품 최저가 시세표","url":"https://wellva3-lab.github.io/lowest-detective/","inLanguage":"ko-KR","description":"가격 기록으로 감별한 생필품 최저가 시세표와 최저가 핫딜"}</script>
 <meta name="theme-color" content="#FFFFFF">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' rx='10' fill='%23FFC93C'/%3E%3Ccircle cx='15' cy='15' r='7.5' fill='none' stroke='%23222' stroke-width='3'/%3E%3Cpath d='M20.5 20.5l6 6' stroke='%23222' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E">
-<title>최저가 탐정</title>
+<title>최저가 탐정 | 생필품 최저가 시세표 · 쿠팡 핫딜</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 :root{
@@ -326,7 +339,7 @@ footer p{margin:4px 0;max-width:72ch}
   <footer>
     <p>가격은 표시한 날짜 기준이에요. 쿠팡 가격은 하루에도 여러 번 바뀌니 구매 전에 최종 가격을 확인해 주세요. 가격 기록은 가격 추적 서비스의 최근 2개월 데이터를 참고했어요.</p>
     <p>이 사이트의 상품 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. 구매자가 내는 가격은 같아요.</p>
-    <p style="margin-top:12px"><button class="copy" id="copyLink" type="button">🔗 사이트 링크 복사</button> <span id="copyMsg" role="status"></span></p>
+    <p style="margin-top:12px"><button class="copy" id="shareLink" type="button">📤 친구에게 공유</button> <button class="copy" id="copyLink" type="button">🔗 사이트 링크 복사</button> <span id="copyMsg" role="status"></span></p>
   </footer>
 </main>
 
@@ -509,6 +522,11 @@ footer p{margin:4px 0;max-width:72ch}
     go(v);
   });
   window.addEventListener('hashchange', function(){ if (/^#n\d+$/.test(location.hash)) go(+location.hash.slice(2)); });
+  document.getElementById('shareLink').addEventListener('click', function(){
+    var url = location.href.split('#')[0], out = document.getElementById('copyMsg');
+    if (navigator.share){ navigator.share({title: '최저가 탐정', text: '이번 주 생필품, 지금 사도 될까? 최저가 시세표 보기', url: url}).catch(function(){}); return; }
+    try { navigator.clipboard.writeText(url).then(function(){ out.textContent = '링크를 복사했어요. 카톡에 붙여 넣어 보세요.'; }); } catch(err){ out.textContent = url; }
+  });
   document.getElementById('copyLink').addEventListener('click', function(){
     var url = location.href.split('#')[0]; var out = document.getElementById('copyMsg');
     try { navigator.clipboard.writeText(url).then(function(){ out.textContent = '복사했어요.'; }, function(){ out.textContent = url; }); } catch(err){ out.textContent = url; }
