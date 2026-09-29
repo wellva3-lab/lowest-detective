@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://wellva3-lab.github.io/lowest-detective/sitemap.xml
+
+#DaumWebMasterTool:f293750b64e0c22644b88d4b344c53aae30d90306ed6bbc642e7b10113994fd6:WiejS/EdbXg9VKmepY6BWg==
