@@ -89,7 +89,11 @@ section{padding-block:34px 6px;scroll-margin-top:64px}
 .sec-head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(23px,3.6vw,28px);margin:0;line-height:1.2}
 .sec-head p{margin:0;color:var(--muted);font-size:14px}
 .sec-head .right{margin-left:auto;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
-.disclose{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.disclose{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;font-weight:600;color:var(--ink);background:var(--ok-soft);border:1px solid var(--marker);border-left:5px solid var(--marker);border-radius:10px;padding:9px 12px;margin:0 0 14px;line-height:1.45}
+.disclose::before{content:"광고";flex:none;background:var(--ink);color:var(--paper);font-size:11.5px;font-weight:700;border-radius:5px;padding:1px 7px;margin-top:1px}
+.adbar{background:var(--marker);color:var(--marker-ink);font-size:13px;font-weight:700;line-height:1.4}
+.adbar .wrap{padding-block:7px;display:flex;gap:8px;align-items:center}
+.adbar b{flex:none;background:var(--marker-ink);color:var(--marker);font-size:11.5px;border-radius:5px;padding:1px 7px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
 .chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -98,6 +102,9 @@ section{padding-block:34px 6px;scroll-margin-top:64px}
 /* price board */
 .board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.board{grid-template-columns:minmax(0,1fr)}}
+a.row{text-decoration:none;color:inherit;transition:border-color .15s}
+a.row:hover{border-color:var(--muted)}
+a.row:hover .nm{text-decoration:underline}
 .row{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px 10px 10px}
 .row img{width:64px;height:64px;border-radius:8px;background:#fff;object-fit:contain;display:block}
 .row .mid{min-width:0}
@@ -111,8 +118,8 @@ section{padding-block:34px 6px;scroll-margin-top:64px}
 .pill.buy{background:var(--buy-soft);color:var(--buy)}
 .pill.ok{background:var(--ok-soft);color:var(--ok)}
 .pill.wait{background:var(--wait-soft);color:var(--wait)}
-.row .go{font-size:12.5px;font-weight:700;text-decoration:none;color:var(--muted);white-space:nowrap}
-.row .go:hover{color:var(--ink)}
+.row .go{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+a.row:hover .go{color:var(--ink)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-top:12px}
 
 /* deals */
@@ -141,7 +148,7 @@ section{padding-block:34px 6px;scroll-margin-top:64px}
 .arrow{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center}
 .arrow:disabled{opacity:.35;cursor:default}
 @media (hover:none){.railhead .arrows{display:none}}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,176px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 10px;overscroll-behavior-x:contain;scrollbar-width:thin}
+.rail{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,176px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 10px;overscroll-behavior-x:contain;scrollbar-width:thin}
 .rail > *{scroll-snap-align:start}
 .rail.videos{grid-auto-columns:minmax(260px,300px)}
 .deal .rank{position:absolute;right:8px;top:8px;background:var(--ink);color:var(--paper);font-family:var(--f-mono);font-size:11.5px;font-weight:600;border-radius:6px;padding:2px 6px}
@@ -159,6 +166,9 @@ section{padding-block:34px 6px;scroll-margin-top:64px}
 .case .v{font-size:12px;color:var(--stamp);font-weight:700}
 .case .lk{display:flex;gap:10px;font-size:12.5px;font-weight:700;margin-top:2px}
 .case .lk a{text-decoration:none}
+.case .hit-a{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:2px}
+.case .hit-a:hover .nm{text-decoration:underline}
+.case > a.im{display:block;height:100%}
 
 /* rules */
 .rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -190,6 +200,7 @@ footer p{margin:4px 0;max-width:72ch}
     </nav>
   </div>
 </header>
+<div class="adbar" role="note"><div class="wrap"><b>광고</b><span>이 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</span></div></div>
 
 <div class="hero" id="top">
   <div class="wrap">
@@ -222,6 +233,7 @@ footer p{margin:4px 0;max-width:72ch}
       <p>매주 월요일 새로 판정해요. 개당 가격도 같이 보세요.</p>
       <span class="right" id="updated"></span>
     </div>
+    <p class="disclose">쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
     <div class="chips" id="sigChips" role="group" aria-label="판정으로 거르기">
       <button class="chip" type="button" data-sig="all" aria-pressed="true">전체</button>
       <button class="chip" type="button" data-sig="buy" aria-pressed="false">지금 사세요</button>
@@ -242,12 +254,13 @@ footer p{margin:4px 0;max-width:72ch}
       <p>지금 가격이 최근 2개월 기록 중 가장 싼 로켓배송 상품만 모았어요. 옆으로 넘겨 보세요.</p>
       <span class="right" id="dealCount"></span>
     </div>
-    <p class="disclose">이 사이트의 상품 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
+    <p class="disclose">쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
     <div id="dealRails"><div class="empty">핫딜을 불러오는 중이에요.</div></div>
   </section>
 
   <section id="videos" aria-labelledby="videoTitle">
     <div class="sec-head"><h2 id="videoTitle">영상 속 상품</h2><p>최저가 탐정 쇼츠에 나온 상품이에요. 번호는 영상과 같아요.</p></div>
+    <p class="disclose">쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
     <div class="rail videos" id="videoList" tabindex="0" aria-label="영상 속 상품 목록"></div>
   </section>
 
@@ -279,12 +292,12 @@ footer p{margin:4px 0;max-width:72ch}
   function stapleRow(s){
     var gapTxt = s.signal === 'buy' ? '지금이 최근 최저가' : '최저 ' + fmt(s.low) + '원보다 <b>' + s.gap + '%</b> 비쌈';
     var unit = s.unit ? ' · ' + s.unitName + '당 <b class="num">' + fmt(s.unit) + '원</b>' : '';
-    return '<div class="row" data-sig="' + s.signal + '">' +
+    return '<a class="row" data-sig="' + s.signal + '" href="' + esc(s.link) + '" target="_blank" rel="noopener' + (s.affiliate ? ' sponsored' : '') + '">' +
       '<img src="' + esc(s.img) + '" alt="" loading="lazy" width="64" height="64">' +
       '<div class="mid"><div class="cat">' + esc(s.cat) + '</div><div class="nm" title="' + esc(s.name) + '">' + esc(s.name) + '</div>' +
       '<div class="meta">' + gapTxt + unit + '</div></div>' +
       '<div class="end"><span class="pr num">' + fmt(s.now) + '원</span><span class="pill ' + s.signal + '">' + SIG[s.signal] + '</span>' +
-      '<a class="go" href="' + esc(s.link) + '" target="_blank" rel="noopener' + (s.affiliate ? ' sponsored' : '') + '">쿠팡 →</a></div></div>';
+      '<span class="go">쿠팡에서 보기 →</span></div></a>';
   }
   function renderBoard(){
     var list = data.staples.filter(function(s){ return sigFilter === 'all' || s.signal === sigFilter; });
@@ -317,37 +330,44 @@ footer p{margin:4px 0;max-width:72ch}
     startAuto();
   }
 
-  /* 자동 넘김: 화면에 보이는 줄만, 3.5초마다 카드 한 장씩. 마우스를 올리거나 만지면 멈추고, 끝에 닿으면 처음으로 */
+  /* 자동 넘김: 3초마다 카드 한 장씩 자동으로 넘어가요. 손으로 넘기거나 마우스를 올리면 잠깐 멈췄다가 다시 흘러가고, 끝에 닿으면 처음으로 돌아가요. */
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var visible = new Set(), paused = new WeakMap(), autoTimer = null, io = null;
   function stepRail(r){
-    var card = r.firstElementChild; if (!card) return;
-    var step = card.getBoundingClientRect().width + 10;
-    if (r.scrollLeft + r.clientWidth >= r.scrollWidth - 4) r.scrollTo({left: 0, behavior: 'smooth'});
-    else r.scrollBy({left: step, behavior: 'smooth'});
+    var cards = r.children; if (!cards.length) return;
+    var max = r.scrollWidth - r.clientWidth; if (max < 4) return;
+    var base = cards[0].offsetLeft, x = r.scrollLeft, target = 0;
+    if (x < max - 4){
+      for (var i = 0; i < cards.length; i++){ var L = cards[i].offsetLeft - base; if (L > x + 4){ target = Math.min(L, max); break; } }
+    }
+    /* iOS 사파리에서 스냅이 자동 이동을 되돌리지 않도록 잠깐 스냅을 끄고 이동 */
+    r.style.scrollSnapType = 'none';
+    r.scrollTo({left: target, behavior: reduceMotion ? 'auto' : 'smooth'});
+    clearTimeout(r._snapT); r._snapT = setTimeout(function(){ r.style.scrollSnapType = ''; }, 800);
   }
   function startAuto(){
-    if (reduceMotion) return;
     var rails = document.querySelectorAll('.rail');
-    if (io) io.disconnect();
-    io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }, {threshold: 0.6});
+    if ('IntersectionObserver' in window){
+      if (io) io.disconnect();
+      io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }, {threshold: 0.2});
+    }
     rails.forEach(function(r){
-      io.observe(r);
+      if (io) io.observe(r); else visible.add(r);
       if (r.dataset.autoBound) return; r.dataset.autoBound = '1';
       var hold = function(ms){ paused.set(r, Date.now() + ms); };
-      r.addEventListener('mouseenter', function(){ hold(1e9); });
-      r.addEventListener('mouseleave', function(){ hold(1500); });
-      r.addEventListener('touchstart', function(){ hold(8000); }, {passive: true});
-      r.addEventListener('focusin', function(){ hold(1e9); });
-      r.addEventListener('focusout', function(){ hold(1500); });
-      r.addEventListener('wheel', function(){ hold(8000); }, {passive: true});
+      r.addEventListener('mouseenter', function(){ hold(6000); });
+      r.addEventListener('mousemove', function(){ hold(4000); });
+      r.addEventListener('touchstart', function(){ hold(5000); }, {passive: true});
+      r.addEventListener('touchend', function(){ hold(4000); }, {passive: true});
+      r.addEventListener('wheel', function(){ hold(5000); }, {passive: true});
+      r.addEventListener('focusin', function(e){ if (e.target !== r) hold(8000); });
     });
     if (autoTimer) return;
     autoTimer = setInterval(function(){
       if (document.hidden) return;
-      var i = 0;
-      visible.forEach(function(r){ if ((paused.get(r) || 0) > Date.now()) return; setTimeout(function(){ stepRail(r); }, i++ * 350); });
-    }, 3500);
+      var i = 0, now = Date.now();
+      visible.forEach(function(r){ if ((paused.get(r) || 0) > now) return; setTimeout(function(){ stepRail(r); }, i++ * 300); });
+    }, 3000);
   }
 
   function updateArrows(){
@@ -358,9 +378,10 @@ footer p{margin:4px 0;max-width:72ch}
   }
   function videoCard(d){
     var v = d.lowest ? '가격 기록상 최저가' : '평소보다 ' + d.off + '% 저렴';
-    return '<article class="case" id="n' + d.no + '"><img src="' + esc(d.img) + '" alt="" loading="lazy" width="92" height="92">' +
-      '<div class="b"><span class="no"><b>No.' + d.no + '</b> ' + md(d.date) + ' 영상</span><span class="nm">' + esc(d.name) + '</span>' +
-      '<span class="pr num">' + fmt(d.price) + '원</span><span class="v">' + v + ' (' + md(d.date) + ' 기준)</span>' +
+    var L = ' href="' + esc(d.link) + '" target="_blank" rel="noopener sponsored"';
+    return '<article class="case" id="n' + d.no + '"><a class="im"' + L + ' tabindex="-1" aria-hidden="true"><img src="' + esc(d.img) + '" alt="" loading="lazy" width="92" height="92"></a>' +
+      '<div class="b"><a class="hit-a"' + L + '><span class="no"><b>No.' + d.no + '</b> ' + md(d.date) + ' 영상</span><span class="nm">' + esc(d.name) + '</span>' +
+      '<span class="pr num">' + fmt(d.price) + '원</span><span class="v">' + v + ' (' + md(d.date) + ' 기준)</span></a>' +
       '<span class="lk"><a href="' + esc(d.link) + '" target="_blank" rel="noopener sponsored">쿠팡에서 확인 →</a>' + (d.youtube ? '<a href="' + esc(d.youtube) + '" target="_blank" rel="noopener">영상</a>' : '') + '</span></div></article>';
   }
 
